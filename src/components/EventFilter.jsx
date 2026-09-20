@@ -5,7 +5,7 @@ const categories = ['All', 'Music', 'Tech', 'Conference', 'Workshop', 'Festival'
 
 export const EventFilter = ({ searchTerm, setSearchTerm, selectedCategory, setSelectedCategory }) => {
   return (
-    <div className="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 sm:p-6 mb-10 space-y-4 shadow-xl">
+    <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 mb-10 space-y-4 shadow-sm">
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
         
         {/* Search Bar */}
@@ -16,7 +16,7 @@ export const EventFilter = ({ searchTerm, setSearchTerm, selectedCategory, setSe
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by event title, location..."
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-950/80 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
+            className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-500/10 transition-all shadow-sm"
           />
         </div>
 
@@ -27,10 +27,10 @@ export const EventFilter = ({ searchTerm, setSearchTerm, selectedCategory, setSe
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
                 selectedCategory === cat
-                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
-                  : 'bg-slate-950/60 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800/60'
+                  ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
+                  : 'bg-white text-slate-600 hover:text-blue-600 hover:bg-slate-50 border border-slate-200 shadow-sm'
               }`}
             >
               {cat}

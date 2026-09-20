@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Ticket, Calendar, PlusCircle, User, LogOut, Sparkles, Menu, X, LayoutDashboard } from 'lucide-react';
+import { Ticket, Calendar, User, LogOut, Menu, X, LayoutDashboard, ArrowUpRight } from 'lucide-react';
 
 export const Navbar = () => {
   const { user, isAuthenticated, isOrganizer, logout } = useAuth();
@@ -14,50 +14,74 @@ export const Navbar = () => {
     navigate('/login');
   };
 
-  const isActive = (path) => location.pathname === path;
+  const isHome = location.pathname === '/';
+
+  const scrollToSection = (sectionId) => {
+    setMobileMenuOpen(false);
+    if (isHome) {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      navigate(`/#${sectionId}`);
+    }
+  };
 
   return (
-    <nav className="sticky top-0 z-50 bg-[#0b0f19]/80 backdrop-blur-md border-b border-slate-800/80">
+    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm transition-all text-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           
           {/* Brand Logo */}
-          <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform duration-300">
-              <Ticket className="w-6 h-6 text-white transform -rotate-12" />
+          <Link to="/" className="flex items-center space-x-2.5 group">
+            <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center shadow-md shadow-blue-500/25 group-hover:scale-105 transition-transform duration-300">
+              <Ticket className="w-5 h-5 text-white transform -rotate-12" />
             </div>
-            <div>
-              <span className="text-2xl font-extrabold bg-gradient-to-r from-white via-slate-100 to-indigo-300 bg-clip-text text-transparent tracking-tight">
-                Happy<span className="text-indigo-400">Core</span>
-              </span>
-              <span className="block text-[10px] uppercase font-bold tracking-widest text-indigo-400/80 -mt-1">
-                Event Ticketing
+            <div className="flex items-center">
+              <span className="text-2xl font-black tracking-tight text-slate-900">
+                Tickets<span className="text-blue-600">Candy</span>
               </span>
             </div>
           </Link>
 
           {/* Desktop Nav Links */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="hidden lg:flex items-center space-x-8">
+            <Link
+              to="/"
+              className="text-sm font-semibold text-slate-700 hover:text-blue-600 transition-colors"
+            >
+              Home
+            </Link>
+            <button
+              onClick={() => scrollToSection('how-it-works')}
+              className="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors"
+            >
+              How It Works
+            </button>
+            <button
+              onClick={() => scrollToSection('benefits')}
+              className="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors"
+            >
+              Benefits
+            </button>
+            <button
+              onClick={() => scrollToSection('fees')}
+              className="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors"
+            >
+              Fees Explained
+            </button>
             <Link
               to="/events"
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2 ${
-                isActive('/events')
-                  ? 'bg-indigo-600/20 text-indigo-400 border border-indigo-500/30'
-                  : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
-              }`}
+              className="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors flex items-center space-x-1"
             >
-              <Calendar className="w-4 h-4" />
               <span>Explore Events</span>
             </Link>
 
             {isAuthenticated && !isOrganizer && (
               <Link
                 to="/my-tickets"
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2 ${
-                  isActive('/my-tickets')
-                    ? 'bg-indigo-600/20 text-indigo-400 border border-indigo-500/30'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
-                }`}
+                className="text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors flex items-center space-x-1"
               >
                 <Ticket className="w-4 h-4" />
                 <span>My Tickets</span>
@@ -67,11 +91,7 @@ export const Navbar = () => {
             {isAuthenticated && isOrganizer && (
               <Link
                 to="/organizer-dashboard"
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2 ${
-                  isActive('/organizer-dashboard')
-                    ? 'bg-amber-600/20 text-amber-400 border border-amber-500/30'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
-                }`}
+                className="text-sm font-semibold text-amber-600 hover:text-amber-700 transition-colors flex items-center space-x-1"
               >
                 <LayoutDashboard className="w-4 h-4" />
                 <span>Organizer Dashboard</span>
@@ -80,17 +100,17 @@ export const Navbar = () => {
           </div>
 
           {/* Right Action / Profile */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-5">
             {isAuthenticated ? (
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-3 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800">
-                  <div className="w-8 h-8 rounded-lg bg-indigo-600/30 border border-indigo-500/30 text-indigo-400 flex items-center justify-center font-bold text-sm">
+              <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-slate-100 border border-slate-200">
+                  <div className="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">
                     {user?.name?.charAt(0).toUpperCase()}
                   </div>
-                  <div className="text-left">
-                    <p className="text-xs font-semibold text-white leading-tight">{user?.name}</p>
-                    <span className={`inline-block text-[10px] font-medium uppercase px-1.5 py-0.5 rounded ${
-                      isOrganizer ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-indigo-500/20 text-indigo-300'
+                  <div className="text-left pr-1">
+                    <p className="text-xs font-bold text-slate-900 leading-tight">{user?.name}</p>
+                    <span className={`inline-block text-[9px] font-bold uppercase tracking-wider ${
+                      isOrganizer ? 'text-amber-600' : 'text-blue-600'
                     }`}>
                       {user?.role}
                     </span>
@@ -99,23 +119,23 @@ export const Navbar = () => {
 
                 <button
                   onClick={handleLogout}
-                  className="p-2 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors"
+                  className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-full transition-colors"
                   title="Log Out"
                 >
-                  <LogOut className="w-5 h-5" />
+                  <LogOut className="w-4 h-4" />
                 </button>
               </div>
             ) : (
               <div className="flex items-center space-x-3">
                 <Link
                   to="/login"
-                  className="px-4 py-2 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors"
+                  className="px-4 py-2 rounded-full text-sm font-semibold text-slate-700 hover:text-blue-600 hover:bg-slate-100 transition-all"
                 >
-                  Sign In
+                  Login
                 </Link>
                 <Link
-                  to="/register"
-                  className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 transition-all transform hover:-translate-y-0.5"
+                  to="/register?role=organizer"
+                  className="px-5 py-2.5 rounded-full text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 hover:shadow-blue-500/35 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
                 >
                   Get Started
                 </Link>
@@ -124,10 +144,10 @@ export const Navbar = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
+          <div className="lg:hidden flex items-center">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+              className="p-2 rounded-xl text-slate-700 hover:text-blue-600 hover:bg-slate-100"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -138,19 +158,45 @@ export const Navbar = () => {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-slate-900 border-b border-slate-800 px-4 pt-2 pb-6 space-y-3">
+        <div className="lg:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 space-y-3 shadow-xl">
+          <Link
+            to="/"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-blue-600"
+          >
+            Home
+          </Link>
+          <button
+            onClick={() => scrollToSection('how-it-works')}
+            className="block w-full text-left px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-blue-600"
+          >
+            How It Works
+          </button>
+          <button
+            onClick={() => scrollToSection('benefits')}
+            className="block w-full text-left px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-blue-600"
+          >
+            Benefits
+          </button>
+          <button
+            onClick={() => scrollToSection('fees')}
+            className="block w-full text-left px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-blue-600"
+          >
+            Fees Explained
+          </button>
           <Link
             to="/events"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:bg-slate-800 hover:text-white"
+            className="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-blue-600"
           >
             Explore Events
           </Link>
+
           {isAuthenticated && !isOrganizer && (
             <Link
               to="/my-tickets"
               onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:bg-slate-800 hover:text-white"
+              className="block px-3 py-2 rounded-lg text-sm font-semibold text-blue-600 hover:bg-blue-50"
             >
               My Tickets
             </Link>
@@ -159,22 +205,22 @@ export const Navbar = () => {
             <Link
               to="/organizer-dashboard"
               onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:bg-slate-800 hover:text-white"
+              className="block px-3 py-2 rounded-lg text-sm font-semibold text-amber-600 hover:bg-amber-50"
             >
               Organizer Dashboard
             </Link>
           )}
 
-          <div className="pt-4 border-t border-slate-800">
+          <div className="pt-4 border-t border-slate-200">
             {isAuthenticated ? (
               <div className="flex items-center justify-between pt-2">
                 <div className="flex items-center space-x-3">
-                  <div className="w-9 h-9 rounded-lg bg-indigo-600/30 text-indigo-400 flex items-center justify-center font-bold">
+                  <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">
                     {user?.name?.charAt(0).toUpperCase()}
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-white">{user?.name}</p>
-                    <p className="text-xs text-slate-400 capitalize">{user?.role}</p>
+                    <p className="text-sm font-bold text-slate-900">{user?.name}</p>
+                    <p className="text-xs text-slate-500 capitalize">{user?.role}</p>
                   </div>
                 </div>
                 <button
@@ -182,7 +228,7 @@ export const Navbar = () => {
                     setMobileMenuOpen(false);
                     handleLogout();
                   }}
-                  className="px-3 py-1.5 rounded-lg text-sm font-medium text-rose-400 bg-rose-500/10 hover:bg-rose-500/20"
+                  className="px-3 py-1.5 rounded-full text-xs font-bold text-rose-600 bg-rose-50 hover:bg-rose-100"
                 >
                   Log Out
                 </button>
@@ -192,14 +238,14 @@ export const Navbar = () => {
                 <Link
                   to="/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full text-center px-4 py-2 rounded-lg text-sm font-medium text-slate-300 bg-slate-800"
+                  className="w-full text-center px-4 py-2.5 rounded-full text-sm font-bold text-slate-700 bg-slate-100 hover:bg-slate-200"
                 >
-                  Sign In
+                  Login
                 </Link>
                 <Link
-                  to="/register"
+                  to="/register?role=organizer"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full text-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-indigo-600"
+                  className="w-full text-center px-4 py-2.5 rounded-full text-sm font-bold text-white bg-blue-600 hover:bg-blue-700"
                 >
                   Get Started
                 </Link>

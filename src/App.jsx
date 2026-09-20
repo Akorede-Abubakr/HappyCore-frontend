@@ -15,15 +15,25 @@ import { CheckoutPage } from './pages/CheckoutPage';
 import { MyTicketsPage } from './pages/MyTicketsPage';
 import { TicketDetailPage } from './pages/TicketDetailPage';
 
+import { useAuth } from './context/AuthContext';
+
+const HomeRoute = () => {
+  const { isAuthenticated, isOrganizer } = useAuth();
+  if (isAuthenticated) {
+    return isOrganizer ? <OrganizerDashboard /> : <UserDashboard />;
+  }
+  return <LandingPage />;
+};
+
 export function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="flex flex-col min-h-screen bg-[#0b0f19] text-slate-100">
+        <div className="flex flex-col min-h-screen bg-white text-slate-900">
           <Navbar />
           <main className="flex-grow">
             <Routes>
-              <Route path="/" element={<LandingPage />} />
+              <Route path="/" element={<HomeRoute />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/events" element={<EventListingPage />} />

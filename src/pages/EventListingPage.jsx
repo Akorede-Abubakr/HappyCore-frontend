@@ -44,12 +44,12 @@ export const EventListingPage = () => {
       
       {/* Header */}
       <div className="space-y-2">
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-semibold">
+        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-600 text-xs font-bold shadow-sm">
           <Compass className="w-3.5 h-3.5" />
           <span>Live Catalog</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-white">Explore Upcoming Events</h1>
-        <p className="text-slate-400 text-sm max-w-xl">
+        <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">Explore Upcoming Events</h1>
+        <p className="text-slate-600 text-sm max-w-xl">
           Browse through live concerts, tech masterclasses, sports events, and creative workshops.
         </p>
       </div>
@@ -69,16 +69,16 @@ export const EventListingPage = () => {
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3, 4, 5, 6].map((n) => (
-            <div key={n} className="h-96 rounded-2xl bg-slate-900 animate-pulse" />
+            <div key={n} className="h-96 rounded-3xl bg-slate-100 border border-slate-200 animate-pulse" />
           ))}
         </div>
       ) : events.length === 0 ? (
-        <div className="text-center py-20 bg-slate-900/40 rounded-3xl border border-slate-800 space-y-4">
-          <div className="w-14 h-14 mx-auto rounded-2xl bg-slate-800 flex items-center justify-center text-slate-500">
+        <div className="text-center py-20 bg-white rounded-3xl border border-slate-200 shadow-sm space-y-4">
+          <div className="w-14 h-14 mx-auto rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400">
             <CalendarX className="w-7 h-7" />
           </div>
-          <h3 className="text-xl font-bold text-white">No Events Found</h3>
-          <p className="text-slate-400 text-sm max-w-sm mx-auto">
+          <h3 className="text-xl font-bold text-slate-900">No Events Found</h3>
+          <p className="text-slate-500 text-sm max-w-sm mx-auto">
             We couldn't find any events matching your search terms or category selection.
           </p>
           <button
@@ -87,7 +87,7 @@ export const EventListingPage = () => {
               setSelectedCategory('All');
               setSearchParams({});
             }}
-            className="px-4 py-2 rounded-xl text-xs font-semibold text-indigo-400 bg-indigo-500/10 hover:bg-indigo-500/20"
+            className="px-4 py-2 rounded-full text-xs font-bold text-blue-600 bg-blue-50 border border-blue-200 hover:bg-blue-100 transition-colors"
           >
             Clear Filters
           </button>
